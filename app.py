@@ -4,8 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Pass the title to the template
-    return render_template('index.html', title="Ram Calculator")
+    return render_template('index.html')
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
@@ -28,9 +27,9 @@ def calculate():
         else:
             result = 'Invalid operation'
 
-        return render_template('index.html', title="Ram Calculator", result=result)
+        return render_template('index.html', result=result)
     except ValueError:
-        return render_template('index.html', title="Ram Calculator", result='Invalid input')
+        return render_template('index.html', result='Invalid input')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
