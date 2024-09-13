@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                sh 'rm -rf argo-updated-image'
+                   sh 'git clone -b main https://github.com/ramyerubandi1/argo-updated-image.git'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                   sh 'docker build -t argo-updated-image .'
+                
+                }
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                script {
+                sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 024848485298.dkr.ecr.us-west-2.amazonaws.com/argo-updated-image' 
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                  sh 'docker tag argo-updated-image:latest 024848485298.dkr.ecr.us-west-2.amazonaws.com/argo-updated-image'
+                    sh 'docker push 024848485298.dkr.ecr.us-west-2.amazonaws.com/argo-updated-image:latest'
+                }
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline succeeded.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}
