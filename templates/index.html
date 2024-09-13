@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+    <title>RAM Calculator</title>
 </head>
 <body>
-    <h1>{{ title }}</h1>
+    <h1>RAM Calculator</h1>
     <form action="/calculate" method="post">
-        <input type="text" name="num1" placeholder="Number 1" required>
-        <input type="text" name="num2" placeholder="Number 2" required>
+        <input type="number" name="num1" step="any" placeholder="First number" required>
+        <input type="number" name="num2" step="any" placeholder="Second number" required>
         <select name="operation" required>
             <option value="add">Add</option>
             <option value="subtract">Subtract</option>
@@ -18,8 +18,10 @@
         </select>
         <button type="submit">Calculate</button>
     </form>
+
     {% if result is not none %}
-        <p>Result: {{ result }}</p>
+    <h2>Result:</h2>
+    <p>{{ num1 }} {{ operation }} {{ num2 }} = {{ result }}</p>
     {% endif %}
 </body>
 </html>
