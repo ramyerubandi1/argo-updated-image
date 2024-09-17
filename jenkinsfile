@@ -52,6 +52,7 @@ pipeline {
             steps {
                 script {
                     sh """
+                    kubectl create namespace calculator
                     kubectl apply -f k8s
                     """
                 }
