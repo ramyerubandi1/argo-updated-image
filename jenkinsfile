@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    argocd sync calculator-ro
+                    argocd sync calculator-ro --prune
                     """
                 }
             }
