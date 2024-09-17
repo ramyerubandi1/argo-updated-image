@@ -39,12 +39,40 @@ pipeline {
         }
     }
     
+    stage('Update Manifests') {
+            steps {
+                script {
+                    sh """
+                    sed -i 's|IMAGE_PLACEHOLDER|024848485298.dkr.ecr.us-west-2.amazonaws.com/argo-updated-image:latest|g' k8s/rollout.yaml
+                    """
+                }
+            }
+        }
+        stage('Apply Kubernetes Manifests') {
+            steps {
+                script {
+                    sh """
+                    kubectl apply -f k8s
+                    """
+                }
+            }
+        }
+        stage('Trigger Argo CD Sync') {
+            steps {
+                script {
+                    sh """
+                    argocd app sync calculator --namespace argocd
+                    """
+                }
+            }
+        }
+    }
     post {
         success {
-            echo 'Pipeline succeeded.'
+            echo 'Deployment successful!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Deployment failed!'
         }
     }
 }
