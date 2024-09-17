@@ -52,8 +52,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    kubectl create namespace calculator
-                    kubectl apply -f k8s
+                    kubectl get namespace calculator || kubectl create namespace calculator
+                    kubectl apply -f argo-updated-image/k8s
                     """
                 }
             }
